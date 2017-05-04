@@ -89,7 +89,7 @@ public class HMC5883L {
         return i2c.readBulk(ADDRESS, addr, bytes);
     }
 
-    ArrayList<Double> getRaw() throws IOException {
+    public ArrayList<Double> getRaw() throws IOException {
         ArrayList<Double> returnList =new ArrayList<>();
         ArrayList<Character> vals = getVals(0x03,6);
         if (vals.size() == 6) {
