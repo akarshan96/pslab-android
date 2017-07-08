@@ -1,4 +1,3 @@
-
 package org.fossasia.pslab.activity;
 
 
@@ -33,12 +32,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.fossasia.pslab.communication.AnalyticsClass;
 import org.fossasia.pslab.communication.ScienceLab;
 import org.fossasia.pslab.fragment.ChannelParametersFragment;
 import org.fossasia.pslab.fragment.DataAnalysisFragment;
 import org.fossasia.pslab.fragment.TimebaseTriggerFragment;
 import org.fossasia.pslab.fragment.XYPlotFragment;
 import org.fossasia.pslab.others.ScienceLabCommon;
+import org.fossasia.pslab.communication.AnalyticsClass.*;
 import org.fossasia.pslab.R;
 
 import java.util.ArrayList;
@@ -72,12 +73,11 @@ public class OscilloscopeActivity extends AppCompatActivity implements
     private TextView xyPlotTextView;
     private TextView leftYAxisLabel;
     private TextView leftYAxisLabelUnit;
-    private TextView rightYAxisLabel;
     private TextView rightYAxisLabelUnit;
     private TextView xAxisLabelUnit;
     private int height;
     private int width;
-    private double timebase;
+    public double timebase;
     private XAxis x1;
     private YAxis y1;
     private YAxis y2;
@@ -88,8 +88,8 @@ public class OscilloscopeActivity extends AppCompatActivity implements
     public boolean isTriggerSelected;
     public boolean isFourierTransformSelected;
     public boolean isXYPlotSelected;
-    public boolean sineFit;
-    public boolean squareFit;
+    public boolean isSineFitSelected;
+    public boolean isSquareFitSelected;
     private String leftYAxisInput;
     public String triggerChannel;
     public String curveFittingChannel1;
@@ -103,6 +103,7 @@ public class OscilloscopeActivity extends AppCompatActivity implements
     private CaptureTask captureTask;
     private CaptureTaskTwo captureTask2;
     private CaptureTaskThree captureTask3;
+    AnalyticsClass analyticsClass;
 
 
     @Override
@@ -121,7 +122,6 @@ public class OscilloscopeActivity extends AppCompatActivity implements
         xyPlotButton = (ImageButton) findViewById(R.id.button_xy_plot_os);
         leftYAxisLabel = (TextView) findViewById(R.id.tv_label_left_yaxis_os);
         leftYAxisLabelUnit = (TextView) findViewById(R.id.tv_unit_left_yaxis_os);
-        rightYAxisLabel = (TextView) findViewById(R.id.tv_label_right_yaxis_os);
         rightYAxisLabelUnit = (TextView) findViewById(R.id.tv_unit_right_yaxis_os);
         xAxisLabelUnit = (TextView) findViewById(R.id.tv_unit_xaxis_os);
         channelParametersTextView = (TextView) findViewById(R.id.tv_channel_parameters_os);
@@ -133,10 +133,16 @@ public class OscilloscopeActivity extends AppCompatActivity implements
         y2 = mChart.getAxisRight();
         triggerChannel = "CH1";
         trigger = 0;
+        timebase = 875;
+        curveFittingChannel1 = "None";
+        curveFittingChannel2 = "None";
+        analyticsClass = new AnalyticsClass();
+        isSineFitSelected = true;
+        isSquareFitSelected = false;
 
         //int freq = scienceLab.setSine1(3000);
         //Log.v("SIN Fre", "" + freq);
-        //scienceLab.setW1(3000, "sine");
+        scienceLab.setW1(3000, "sine");
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -465,12 +471,10 @@ public class OscilloscopeActivity extends AppCompatActivity implements
     }
 
     public void setLeftYAxisLabel(String leftYAxisInput) {
+        this.leftYAxisInput = leftYAxisInput;
         leftYAxisLabel.setText(leftYAxisInput);
     }
 
-    public void setRightYAxisLabel(String rightYAxisInput) {
-        rightYAxisLabel.setText(rightYAxisInput);
-    }
 
     public class CaptureTask extends AsyncTask<String, Void, Void> {
         ArrayList<Entry> entries;
@@ -483,9 +487,9 @@ public class OscilloscopeActivity extends AppCompatActivity implements
                 //no. of samples and timegap still need to be determined
                 if (isTriggerSelected) {
                     scienceLab.configureTrigger(0, analogInput, trigger, null, null);
-                    scienceLab.captureTraces(1, 1000, 10, analogInput, true, null);
+                    scienceLab.captureTraces(1, 1024, 10, analogInput, true, null);
                 } else {
-                    scienceLab.captureTraces(1, 1000, 10, analogInput, false, null);
+                    scienceLab.captureTraces(1, 1024, 10, analogInput, false, null);
                 }
                 Log.v("Sleep Time", "" + (1000 * 10 * 1e-3));
                 Thread.sleep((long) (1000 * 10 * 1e-3));
@@ -496,8 +500,45 @@ public class OscilloscopeActivity extends AppCompatActivity implements
                 //Log.v("XDATA", Arrays.toString(xData));
                 //Log.v("YDATA", Arrays.toString(yData));
                 entries = new ArrayList<Entry>();
-                for (int i = 0; i < xData.length; i++) {
-                    entries.add(new Entry((float) xData[i], (float) yData[i]));
+                if (analogInput.equals(curveFittingChannel1) || analogInput.equals(curveFittingChannel2)) {
+
+                    if (isSineFitSelected) {
+                        double[] returnedParameters = analyticsClass.sineFit(xData, yData);
+                        if (timebase == 875) {
+                            for (int i = 0; i < xData.length; i++) {
+                                entries.add(new Entry((float) xData[i],
+                                        (float) (returnedParameters[0] * Math.sin(returnedParameters[1] * xData[i] + returnedParameters[3]) + returnedParameters[2])));
+                            }
+
+                        } else {
+                            for (int i = 0; i < xData.length; i++) {
+                                entries.add(new Entry((float) xData[i] / 1000,
+                                        (float) (returnedParameters[0] * Math.sin(returnedParameters[1] * xData[i] + returnedParameters[3]) + returnedParameters[2])));
+                            }
+                        }
+
+                    } else {
+                        if (timebase == 875) {
+                            for (int i = 0; i < xData.length; i++) {
+                                entries.add(new Entry((float) xData[i], (float) yData[i]));
+                            }
+                        } else {
+                            for (int i = 0; i < xData.length; i++) {
+                                entries.add(new Entry((float) xData[i] / 1000, (float) yData[i]));
+                            }
+                        }
+                    }
+
+                } else {
+                    if (timebase == 875) {
+                        for (int i = 0; i < xData.length; i++) {
+                            entries.add(new Entry((float) xData[i], (float) yData[i]));
+                        }
+                    } else {
+                        for (int i = 0; i < xData.length; i++) {
+                            entries.add(new Entry((float) xData[i] / 1000, (float) yData[i]));
+                        }
+                    }
                 }
             } catch (NullPointerException e) {
                 cancel(true);
@@ -548,10 +589,16 @@ public class OscilloscopeActivity extends AppCompatActivity implements
 
                 entries1 = new ArrayList<Entry>();
                 entries2 = new ArrayList<Entry>();
-
-                for (int i = 0; i < xData.length; i++) {
-                    entries1.add(new Entry((float) xData[i], (float) y1Data[i]));
-                    entries2.add(new Entry((float) xData[i], (float) y2Data[i]));
+                if (timebase == 875) {
+                    for (int i = 0; i < xData.length; i++) {
+                        entries1.add(new Entry((float) xData[i], (float) y1Data[i]));
+                        entries2.add(new Entry((float) xData[i], (float) y2Data[i]));
+                    }
+                } else {
+                    for (int i = 0; i < xData.length; i++) {
+                        entries1.add(new Entry((float) xData[i] / 1000, (float) y1Data[i]));
+                        entries2.add(new Entry((float) xData[i] / 1000, (float) y2Data[i]));
+                    }
                 }
             } catch (NullPointerException e) {
                 cancel(true);
@@ -622,13 +669,20 @@ public class OscilloscopeActivity extends AppCompatActivity implements
                 entries2 = new ArrayList<Entry>();
                 entries3 = new ArrayList<Entry>();
                 entries4 = new ArrayList<Entry>();
-
-                for (int i = 0; i < xData.length; i++) {
-                    entries1.add(new Entry((float) xData[i], (float) y1Data[i]));
-                    entries2.add(new Entry((float) xData[i], (float) y2Data[i]));
-                    entries3.add(new Entry((float) xData[i], (float) y3Data[i]));
-                    entries4.add(new Entry((float) xData[i], (float) y4Data[i]));
-
+                if (timebase == 875) {
+                    for (int i = 0; i < xData.length; i++) {
+                        entries1.add(new Entry((float) xData[i], (float) y1Data[i]));
+                        entries2.add(new Entry((float) xData[i], (float) y2Data[i]));
+                        entries3.add(new Entry((float) xData[i], (float) y3Data[i]));
+                        entries4.add(new Entry((float) xData[i], (float) y4Data[i]));
+                    }
+                } else {
+                    for (int i = 0; i < xData.length; i++) {
+                        entries1.add(new Entry((float) xData[i] / 1000, (float) y1Data[i]));
+                        entries2.add(new Entry((float) xData[i] / 1000, (float) y2Data[i]));
+                        entries3.add(new Entry((float) xData[i] / 1000, (float) y3Data[i]));
+                        entries4.add(new Entry((float) xData[i] / 1000, (float) y4Data[i]));
+                    }
                 }
             } catch (NullPointerException e) {
                 cancel(true);
