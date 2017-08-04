@@ -137,7 +137,11 @@
                 android:layout_height="40dp"
                 android:background="@color/colorPrimary"
                 android:padding="@dimen/title_padding"
+<<<<<<< HEAD
                 android:text="@string/plot_object_temperature"
+=======
+                android:text="Plot - Object Temperature"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                 android:textColor="@color/white"
                 android:textSize="@dimen/sensor_title_font"
                 android:textStyle="bold" />
@@ -166,7 +170,11 @@
                         android:layout_gravity="center_vertical|center_horizontal|center"
                         android:foregroundGravity="center_vertical"
                         android:gravity="center_vertical|center_horizontal|center"
+<<<<<<< HEAD
                         android:text="@string/time"
+=======
+                        android:text="Time "
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="9sp"
                         android:textStyle="normal|bold"
@@ -180,7 +188,11 @@
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/tv_graph_label_xaxis_objtemp_mlx"
                         android:layout_toRightOf="@+id/tv_graph_label_xaxis_objtemp_mlx"
+<<<<<<< HEAD
                         android:text="@string/seconds"
+=======
+                        android:text="(s)"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="9sp"
                         android:textStyle="normal|bold"
@@ -209,7 +221,11 @@
                         android:gravity="top|center_horizontal"
                         android:includeFontPadding="false"
                         android:rotation="-90"
+<<<<<<< HEAD
                         android:text="@string/temp2"
+=======
+                        android:text="Temp."
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="8sp"
                         android:textStyle="normal|bold"
@@ -225,7 +241,11 @@
                         android:layout_above="@+id/tv_label_left_yaxis_objtemp_mlx"
                         android:layout_marginBottom="12dp"
                         android:rotation="-90"
+<<<<<<< HEAD
                         android:text="@string/celcius"
+=======
+                        android:text="(°C)"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#fff"
                         android:textSize="8sp"
                         android:textStyle="normal|bold"
@@ -260,7 +280,11 @@
                 android:layout_height="40dp"
                 android:background="@color/colorPrimary"
                 android:padding="@dimen/title_padding"
+<<<<<<< HEAD
                 android:text="@string/plot_ambient_temperature"
+=======
+                android:text="Plot - Ambient Temperature"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                 android:textColor="@color/white"
                 android:textSize="@dimen/sensor_title_font"
                 android:textStyle="bold" />
@@ -289,7 +313,11 @@
                         android:layout_gravity="center_vertical|center_horizontal|center"
                         android:foregroundGravity="center_vertical"
                         android:gravity="center_vertical|center_horizontal|center"
+<<<<<<< HEAD
                         android:text="@string/time"
+=======
+                        android:text="Time "
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="9sp"
                         android:textStyle="normal|bold"
@@ -303,7 +331,11 @@
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/tv_graph_label_xaxis_ambtemp_mlx"
                         android:layout_toRightOf="@+id/tv_graph_label_xaxis_ambtemp_mlx"
+<<<<<<< HEAD
                         android:text="@string/seconds"
+=======
+                        android:text="(s)"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="9sp"
                         android:textStyle="normal|bold"
@@ -332,7 +364,11 @@
                         android:gravity="top|center_horizontal"
                         android:includeFontPadding="false"
                         android:rotation="-90"
+<<<<<<< HEAD
                         android:text="@string/temp2"
+=======
+                        android:text="Temp."
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#ffff"
                         android:textSize="8sp"
                         android:textStyle="normal|bold"
@@ -348,7 +384,11 @@
                         android:layout_above="@+id/tv_label_left_yaxis_ambtemp_mlx"
                         android:layout_marginBottom="12dp"
                         android:rotation="-90"
+<<<<<<< HEAD
                         android:text="@string/celcius"
+=======
+                        android:text="(°C)"
+>>>>>>> a1b351490dafb780f6eac22e08b3a17631765148
                         android:textColor="#fff"
                         android:textSize="8sp"
                         android:textStyle="normal|bold"
