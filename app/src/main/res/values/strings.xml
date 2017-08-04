@@ -345,4 +345,6 @@
     <string name="plot_humidity">Plot - Humidity</string>
     <string name="humid2">Humid.</string>
     <string name="humidity_unit">(RH)</string>
+    <string name="illum">Illum.</string>
+    <string name="lux2">(Lux)</string>
 </resources>
