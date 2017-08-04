@@ -251,4 +251,19 @@
 
     <string name="experiment_icon">Experiment Icon</string>
     <string name="drop_down_arrow">Drop down arrow</string>
+    <string name="lux">LUX</string>
+    <string name="seconds">(s)</string>
+    <string name="plot_temperature">Plot - Temperature</string>
+    <string name="celcius">(°C)</string>
+    <string name="plot_altitude">Plot - Altitude</string>
+    <string name="plot_pressure">Plot - Pressure</string>
+    <string name="guass">Guass</string>
+    <string name="guassunit">(Ga)</string>
+    <string name="plot_object_temperature">Plot - Object Temperature</string>
+    <string name="plot_ambient_temperature">Plot - Ambient Temperature</string>
+    <string name="acceleration">Acc.</string>
+    <string name="accelerationunit">(m/s²)</string>
+    <string name="plot_humidity">Plot - Humidity</string>
+    <string name="humid2">Humid.</string>
+    <string name="humidity_unit">(RH)</string>
 </resources>
