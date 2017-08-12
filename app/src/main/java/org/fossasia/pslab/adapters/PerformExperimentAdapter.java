@@ -91,6 +91,8 @@ public class PerformExperimentAdapter extends FragmentPagerAdapter {
                     return ExperimentDocFragment.newInstance("M_FullWave.html");
                 if (experimentTitle.equals("Diode Clipping"))
                     return ExperimentDocFragment.newInstance("L_DiodeClipping.md");
+                if (experimentTitle.equals("Diode Clamping"))
+                    return ExperimentDocFragment.newInstance("L_DiodeClamping.md");
             case 1:
                 if (experimentTitle.equals(context.getResources().getString(R.string.zener_iv)))
                     return ZenerSetupFragment.newInstance();
@@ -118,6 +120,8 @@ public class PerformExperimentAdapter extends FragmentPagerAdapter {
                     return DiodeExperiment.newInstance("Full Wave Rectifier");
                 if (experimentTitle.equals("Diode Clipping"))
                     return DiodeExperiment.newInstance("Diode Clipping");
+                if (experimentTitle.equals("Diode Clamping"))
+                    return DiodeExperiment.newInstance("Diode Clamping");
                 return ExperimentSetupFragment.newInstance();
             default:
                 return ExperimentDocFragment.newInstance("astable-multivibrator.html");
